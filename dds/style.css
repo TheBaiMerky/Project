@@ -1,0 +1,703 @@
+:root {
+  /* Authentic Genshin Celestial Palette */
+  --void: #0B132B;          /* Deep Genshin Celestial Navy */
+  --panel: #1C2541;         /* Genshin Menu Blue */
+  --genshin-gold: #E8C97A;  /* Interface Gold Accent */
+  --genshin-gold-bright: #FFE8AD;
+
+  --ice: #C3E0E5;
+  --ice-bright: #F0F8FF;
+  --frost: #6FA8C4;
+  --fatui-red: #A03A3A;
+
+  --fontaine-aqua: #3FD1C7;
+  --fontaine-bright: #A8FFF4;
+  --fontaine-deep: #0B2530;
+  --fontaine-panel: #103B4A;
+  --fontaine-gold: #E8C97A;
+
+  /* Genshin Element Colors */
+  --elem-anemo: #72E2C4;
+  --elem-geo: #FFE175;
+  --elem-electro: #D376FF;
+  --elem-dendro: #A5E847;
+  --elem-hydro: #4BCAFF;
+  --elem-pyro: #FF7200;
+  --elem-cryo: #99FFFF;
+
+  --delusion-red: #FF334B;
+  --delusion-purple: #B026FF;
+  --delusion-dark: #120417;
+}
+
+hthtml {
+  background-color: var(--void);
+}
+
+body { 
+  margin: 0; overflow-x: hidden; 
+  background-color: transparent; 
+  color: var(--ice);
+  font-family: 'Inter', sans-serif;
+  cursor: none;
+  transition: background-color 0.5s ease;
+}
+
+body.delusion-mode {
+  --ice: #FF99A8;
+  --ice-bright: #FFD6DC;
+  --frost: #D64560;
+  --fontaine-aqua: #B026FF;
+  --fontaine-bright: #E5B8FF;
+  --fontaine-gold: #FF334B;
+  background-color: var(--delusion-dark) !important;
+}
+
+.font-display { font-family: 'Cinzel', serif; }
+.font-voice { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+a, button, input, textarea { cursor: none; }
+
+/* Layer 0: Deep Aurora & Stars */
+#ambient-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: 
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255, 232, 173, 0.85), transparent),
+    radial-gradient(1.5px 1.5px at 28% 62%, rgba(255, 255, 255, 0.75), transparent),
+    radial-gradient(2px 2px at 45% 25%, rgba(168, 255, 244, 0.9), transparent),
+    radial-gradient(1.5px 1.5px at 60% 82%, rgba(255, 232, 173, 0.65), transparent),
+    radial-gradient(2px 2px at 75% 15%, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(1.5px 1.5px at 88% 48%, rgba(168, 255, 244, 0.75), transparent),
+    radial-gradient(1.5px 1.5px at 94% 88%, rgba(255, 232, 173, 0.8), transparent),
+    linear-gradient(-45deg, #09101d, #121e33, #082633, #103b4a, #0b132b);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 400% 400%;
+  animation: aurora-shift 15s ease infinite;
+}
+
+/* Layer 1: Mouse Light Spotlight */
+#ambient-spotlight {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(63, 209, 199, 0.12), transparent 80%);
+}
+
+/* Layer 2: Floating Orbs */
+.glow-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.45;
+  transition: background 0.8s ease;
+}
+
+/* Layer 3: Snow & Rain Canvases */
+#snow-canvas, #rain-canvas { 
+  position: fixed; inset: 0; z-index: 3; pointer-events: none; 
+}
+
+/* Dual Cursor */
+#cursor-dot {
+  position: fixed; top: 0; left: 0; width: 10px; height: 10px;
+  background: var(--ice-bright); border-radius: 50%; pointer-events: none; z-index: 9999;
+  box-shadow: 0 0 14px 3px rgba(184,228,240,0.9); transform: translate(-50%, -50%);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+#cursor-dot.in-fontaine { background: var(--fontaine-bright); box-shadow: 0 0 16px 4px rgba(168,255,244,0.9); }
+body.delusion-mode #cursor-dot { background: var(--delusion-red); box-shadow: 0 0 16px 4px rgba(255,51,75,0.9); }
+
+.frost-shard {
+  position: fixed; pointer-events: none; z-index: 9998; width: 5px; height: 5px; background: var(--ice-bright);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  animation: shard-fall 1s ease-out forwards;
+}
+@keyframes shard-fall { to { opacity: 0; transform: translateY(22px) rotate(45deg) scale(0.2); } }
+
+.bubble-particle {
+  position: fixed; pointer-events: none; z-index: 9998; border-radius: 50%; border: 1px solid var(--fontaine-bright);
+  background: rgba(168,255,244,0.2); animation: bubble-rise 1.5s ease-out forwards;
+}
+@keyframes bubble-rise { to { opacity: 0; transform: translateY(-40px) scale(1.4); } }
+
+/* Genshin UI Dossier Cards */
+.yasio-card {
+  background: linear-gradient(160deg, rgba(20, 33, 54, 0.88), rgba(10, 17, 30, 0.95));
+  border: 1px solid rgba(232, 201, 122, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(232, 201, 122, 0.08);
+  backdrop-filter: blur(16px);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.yasio-card:hover {
+  border-color: rgba(232, 201, 122, 0.85);
+  transform: translateY(-4px);
+  box-shadow: 0 0 35px rgba(232, 201, 122, 0.25), inset 0 0 20px rgba(232, 201, 122, 0.15);
+}
+
+.fontaine-card {
+  background: linear-gradient(160deg, rgba(16, 59, 74, 0.88), rgba(8, 28, 36, 0.95));
+  border: 1px solid rgba(63, 209, 199, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(63, 209, 199, 0.1);
+  backdrop-filter: blur(16px);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.fontaine-card:hover {
+  border-color: rgba(168, 255, 244, 0.85);
+  transform: translateY(-4px);
+  box-shadow: 0 0 35px rgba(63, 209, 199, 0.3), inset 0 0 20px rgba(63, 209, 199, 0.2);
+}
+
+/* 5-Star Golden Shimmer Overlay */
+.fontaine-card::before, .yasio-card::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(232, 201, 122, 0.25) 50%,
+    transparent 55%
+  );
+  transform: rotate(30deg) translateY(-100%);
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.fontaine-card:hover::before, .yasio-card:hover::before {
+  transform: rotate(30deg) translateY(100%);
+}
+
+/* Button Sheen & Genshin Click Bounce */
+button, a.rounded {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+button::after, a.rounded::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+button:hover::after, a.rounded:hover::after {
+  left: 140%;
+}
+
+button:active, a.rounded:active {
+  transform: scale(0.95);
+}
+
+/* Radial Elemental Shockwave Ring */
+.burst-ring {
+  position: fixed;
+  border-radius: 50%;
+  border: 2px solid var(--ice-bright);
+  pointer-events: none;
+  z-index: 9997;
+  transform: translate(-50%, -50%) scale(0.1);
+  animation: shockwave 0.5s ease-out forwards;
+}
+
+.burst-ring.fontaine-ring {
+  border-color: var(--fontaine-aqua);
+  box-shadow: 0 0 15px var(--fontaine-aqua);
+}
+
+body.delusion-mode .burst-ring {
+  border-color: var(--delusion-red);
+  box-shadow: 0 0 15px var(--delusion-red);
+}
+
+@keyframes shockwave {
+  0% { width: 20px; height: 20px; opacity: 1; }
+  100% { width: 140px; height: 140px; opacity: 0; }
+}
+
+/* Hexagonal Nodes */
+.hex { clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); }
+.hex-node { background: linear-gradient(160deg, rgba(20, 33, 54, 0.95), rgba(10, 17, 30, 0.98)); border: 1.5px solid rgba(184,228,240,0.35); transition: all 0.3s ease; }
+.hex-node:hover { border-color: var(--ice-bright); box-shadow: 0 0 24px rgba(184,228,240,0.6); transform: scale(1.08); }
+
+.seal-gear {
+  width: 80px; height: 80px; border-radius: 50%; border: 1.5px solid rgba(63,209,199,0.4);
+  display: flex; align-items: center; justify-content: center; position: relative; transition: all 0.3s ease;
+}
+.seal-gear::before {
+  content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 1px dashed rgba(63,209,199,0.35); animation: gear-spin 16s linear infinite;
+}
+@keyframes gear-spin { to { transform: rotate(360deg); } }
+
+.scale-arm { transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1); transform-origin: center; }
+
+#crossing { position: relative; height: 35vh; min-height: 260px; display: flex; align-items: center; justify-content: center; }
+.crack-path { fill: none; stroke: rgba(184,228,240,0.6); stroke-width: 1.5; filter: drop-shadow(0 0 5px rgba(184,228,240,0.8)); }
+
+#cryo-overlay {
+  position: fixed; inset: 0; z-index: 9990; background: radial-gradient(circle, rgba(184,228,240,0.4) 0%, rgba(11, 19, 43, 0.9) 80%);
+  pointer-events: none; opacity: 0; transition: opacity 0.6s ease;
+}
+
+#exhibit-modal {
+  position: fixed; inset: 0; z-index: 1000; background: rgba(9, 16, 29, 0.88); backdrop-filter: blur(20px);
+  display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+}
+#exhibit-modal.active { opacity: 1; pointer-events: auto; }
+
+/* Bottom Journey Bar */
+#walker-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 90; height: 48px; 
+  background: rgba(9, 16, 29, 0.92);
+  backdrop-filter: blur(12px); 
+  border-top: 1px solid rgba(232, 201, 122, 0.25); 
+  display: flex; align-items: center; padding: 0 24px;
+}
+#walking-track { position: relative; width: 100%; height: 4px; background: rgba(184,228,240,0.15); border-radius: 2px; }
+#walking-avatar { position: absolute; top: 50%; left: 0%; transform: translate(-50%, -80%); transition: left 0.15s ease-out; }
+.walking-sprite {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--ice-bright);
+  background: #0B132B;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  animation: bounce-walk 0.5s infinite alternate ease-in-out;
+  box-shadow: 0 0 12px rgba(184, 228, 240, 0.6);
+}
+
+/* Snezhnaya Cryo Glow (Tsaritsa) */
+.walking-sprite.snezhnaya-avatar {
+  border-color: var(--ice-bright);
+  box-shadow: 0 0 14px var(--ice-bright), 0 0 25px rgba(184, 228, 240, 0.5);
+}
+
+/* Fontaine Hydro Glow (Furina) */
+.walking-sprite.fontaine-avatar {
+  border-color: var(--fontaine-aqua);
+  box-shadow: 0 0 14px var(--fontaine-aqua), 0 0 25px rgba(63, 209, 199, 0.6);
+}
+
+@keyframes bounce-walk {
+  0% { transform: translateY(0) rotate(-2deg); }
+  100% { transform: translateY(-5px) rotate(2deg); }
+}
+
+/* GENSHIN LOADING SCREEN */
+#genshin-loader {
+  position: fixed; inset: 0; z-index: 10000;
+  background: radial-gradient(circle at 50% 30%, #1a2838 0%, #0a111a 60%, #04070d 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  padding: 60px 20px 40px; transition: transform 0.8s cubic-bezier(0.7,0,0.3,1), opacity 0.8s ease;
+}
+#genshin-loader.teleport-zoom {
+  transform: scale(3); opacity: 0; pointer-events: none;
+}
+#genshin-flash {
+  position: fixed; inset: 0; z-index: 10001; background: #FFFFFF;
+  opacity: 0; pointer-events: none; transition: opacity 0.6s ease-out;
+}
+
+.cloud-bg {
+   position: absolute; inset: 0; pointer-events: none; z-index: -1; opacity: 0.25;
+  background: radial-gradient(ellipse at 50% 40%, rgba(184, 228, 240, 0.3) 0%, transparent 70%);
+}
+
+.genshin-doorway {
+  width: 110px; height: 160px; border: 2px solid rgba(232, 247, 252, 0.3);
+  border-radius: 55px 55px 0 0; position: relative; margin-top: auto; margin-bottom: 20px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-shadow: 0 0 40px rgba(184, 228, 240, 0.1), inset 0 0 20px rgba(184, 228, 240, 0.05);
+  transition: all 0.6s ease;
+}
+.genshin-doorway::after {
+  content: ''; position: absolute; inset: -8px; border: 1px solid rgba(232, 247, 252, 0.15);
+  border-radius: 65px 65px 0 0; pointer-events: none;
+}
+.genshin-doorway.ready {
+  border-color: #E8F7FC; box-shadow: 0 0 60px rgba(232, 247, 252, 0.8), inset 0 0 30px rgba(232, 247, 252, 0.4);
+  cursor: pointer;
+}
+
+.door-beam {
+  width: 2px; height: 100%; background: linear-gradient(180deg, transparent, rgba(232, 247, 252, 0.8), transparent);
+  animation: beam-pulse 2s infinite ease-in-out;
+}
+@keyframes beam-pulse { 0%, 100% { opacity: 0.3; transform: scaleY(0.8); } 50% { opacity: 1; transform: scaleY(1.1); } }
+
+.elem-svg-box {
+  width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.12);
+  opacity: 0.2; transform: scale(0.88); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.elem-svg-box svg { width: 22px; height: 22px; fill: currentColor; }
+
+.elem-svg-box.active-anemo { opacity: 1; transform: scale(1.18); color: var(--elem-anemo); filter: drop-shadow(0 0 12px var(--elem-anemo)); border-color: var(--elem-anemo); }
+.elem-svg-box.active-geo { opacity: 1; transform: scale(1.18); color: var(--elem-geo); filter: drop-shadow(0 0 12px var(--elem-geo)); border-color: var(--elem-geo); }
+.elem-svg-box.active-electro { opacity: 1; transform: scale(1.18); color: var(--elem-electro); filter: drop-shadow(0 0 12px var(--elem-electro)); border-color: var(--elem-electro); }
+.elem-svg-box.active-dendro { opacity: 1; transform: scale(1.18); color: var(--elem-dendro); filter: drop-shadow(0 0 12px var(--elem-dendro)); border-color: var(--elem-dendro); }
+.elem-svg-box.active-hydro { opacity: 1; transform: scale(1.18); color: var(--elem-hydro); filter: drop-shadow(0 0 12px var(--elem-hydro)); border-color: var(--elem-hydro); }
+.elem-svg-box.active-pyro { opacity: 1; transform: scale(1.18); color: var(--elem-pyro); filter: drop-shadow(0 0 12px var(--elem-pyro)); border-color: var(--elem-pyro); }
+.elem-svg-box.active-cryo { opacity: 1; transform: scale(1.18); color: var(--elem-cryo); filter: drop-shadow(0 0 12px var(--elem-cryo)); border-color: var(--elem-cryo); }
+
+.genshin-progress-bg {
+  width: 280px; height: 3px; background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px; position: relative; overflow: hidden; margin: 16px 0;
+}
+.genshin-progress-bar {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 0%;
+  background: linear-gradient(90deg, var(--elem-anemo), var(--elem-hydro), var(--elem-cryo), #FFFFFF);
+  box-shadow: 0 0 14px rgba(232, 247, 252, 0.9); transition: width 0.12s ease-out;
+}
+
+.start-text { animation: tap-pulse 1.5s infinite ease-in-out; cursor: pointer; }
+@keyframes tap-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; text-shadow: 0 0 12px rgba(232,247,252,0.9); } }
+
+body.loading { overflow: hidden; height: 100vh; }
+
+/* Clean & Fluid Wave Transform Animations */
+.wave-anim-back {
+  animation: wave-slide-back 14s linear infinite;
+}
+
+.wave-anim-front {
+  animation: wave-slide-front 7s ease-in-out infinite alternate;
+}
+
+@keyframes wave-slide-back {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes wave-slide-front {
+  0% { transform: translateX(0) scaleY(1); }
+  100% { transform: translateX(-25%) scaleY(1.15); }
+}
+
+/* Inazuma Electro Card Glassmorphism Theme */
+.inazuma-card {
+  background: linear-gradient(160deg, rgba(30, 16, 46, 0.9), rgba(18, 4, 23, 0.95));
+  border: 1px solid rgba(211, 118, 255, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(211, 118, 255, 0.1);
+  backdrop-filter: blur(16px);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.inazuma-card:hover {
+  border-color: rgba(211, 118, 255, 0.85);
+  transform: translateY(-4px);
+  box-shadow: 0 0 35px rgba(176, 38, 255, 0.35), inset 0 0 20px rgba(211, 118, 255, 0.2);
+}
+
+/* Inazuma Electro Shimmer Overlay */
+.inazuma-card::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(211, 118, 255, 0.3) 50%,
+    transparent 55%
+  );
+  transform: rotate(30deg) translateY(-100%);
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.inazuma-card:hover::before {
+  transform: rotate(30deg) translateY(100%);
+}
+
+/* Background Canvas Layer */
+#snow-canvas, #rain-canvas, #lightning-canvas, #geo-canvas { 
+  position: fixed; inset: 0; z-index: 3; pointer-events: none; 
+}
+#inazuma-flash.strike {
+  animation: electro-strike 0.5s ease-out forwards;
+}
+
+@keyframes electro-strike {
+  0% { opacity: 0; }
+  15% { opacity: 0.9; }
+  30% { opacity: 0.2; }
+  45% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Inazuma Border Frame */
+.inazuma-frame-border {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inazuma-frame-border::before,
+.inazuma-frame-border::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(211, 118, 255, 0.8), #E8C97A, rgba(211, 118, 255, 0.8), transparent);
+}
+
+.inazuma-crest {
+  padding: 0 16px;
+  filter: drop-shadow(0 0 10px rgba(211, 118, 255, 0.8));
+  animation: crest-pulse 3s infinite ease-in-out;
+}
+
+@keyframes crest-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(211, 118, 255, 0.6)); }
+  50% { transform: scale(1.15); filter: drop-shadow(0 0 18px rgba(211, 118, 255, 1)); }
+}
+
+/* Enhanced Inazuma Card Electro Corner Borders */
+.inazuma-card {
+  border-image: linear-gradient(135deg, #D376FF 0%, rgba(211, 118, 255, 0.2) 50%, #E8C97A 100%) 1;
+}
+
+/* Inazuma Electro Background Theme Overrides */
+body.inazuma-mode #ambient-bg {
+  background: 
+    /* Electro Starfield Sparkles */
+    radial-gradient(1.5px 1.5px at 15% 20%, rgba(211, 118, 255, 0.9), transparent),
+    radial-gradient(2px 2px at 45% 30%, rgba(232, 201, 122, 0.85), transparent),
+    radial-gradient(1.5px 1.5px at 75% 65%, rgba(211, 118, 255, 0.75), transparent),
+    radial-gradient(2px 2px at 85% 15%, rgba(243, 232, 255, 0.9), transparent),
+    /* Deep Electro Purple Gradient */
+    linear-gradient(-45deg, #120417, #1e102e, #2a083b, #180524, #0b020f);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 400% 400%;
+  animation: aurora-shift 15s ease infinite;
+}
+
+/* Electro Ambient Orbs */
+body.inazuma-mode .orb-1 {
+  background: radial-gradient(circle, #B026FF 0%, transparent 70%);
+}
+
+body.inazuma-mode .orb-2 {
+  background: radial-gradient(circle, #D376FF 0%, transparent 70%);
+}
+/* Liyue Geo Theme Overrides & Cards */
+.liyue-card {
+  background: linear-gradient(160deg, rgba(42, 32, 16, 0.9), rgba(20, 15, 8, 0.95));
+  border: 1px solid rgba(255, 225, 117, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(255, 225, 117, 0.1);
+  backdrop-filter: blur(16px);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.liyue-card:hover {
+  border-color: rgba(255, 225, 117, 0.85);
+  transform: translateY(-4px);
+  box-shadow: 0 0 35px rgba(232, 201, 122, 0.35), inset 0 0 20px rgba(255, 225, 117, 0.2);
+}
+
+.liyue-card::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(255, 225, 117, 0.25) 50%,
+    transparent 55%
+  );
+  transform: rotate(30deg) translateY(-100%);
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.liyue-card:hover::before {
+  transform: rotate(30deg) translateY(100%);
+}
+
+/* Liyue Border Frame Header */
+.liyue-frame-border {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.liyue-frame-border::before,
+.liyue-frame-border::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 225, 117, 0.8), #E8C97A, rgba(255, 225, 117, 0.8), transparent);
+}
+
+.liyue-crest {
+  padding: 0 16px;
+  filter: drop-shadow(0 0 10px rgba(255, 225, 117, 0.8));
+  animation: liyue-pulse 3s infinite ease-in-out;
+}
+
+@keyframes liyue-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(255, 225, 117, 0.6)); }
+  50% { transform: scale(1.15); filter: drop-shadow(0 0 18px rgba(255, 225, 117, 1)); }
+}
+
+/* Liyue Background Mode */
+body.liyue-mode #ambient-bg {
+  background: 
+    radial-gradient(1.5px 1.5px at 10% 15%, rgba(255, 225, 117, 0.9), transparent),
+    radial-gradient(2px 2px at 50% 25%, rgba(232, 201, 122, 0.85), transparent),
+    radial-gradient(1.5px 1.5px at 80% 70%, rgba(255, 225, 117, 0.75), transparent),
+    linear-gradient(-45deg, #1f180d, #2e2210, #3b2b12, #1d1408, #0e0a04);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 400% 400%;
+  animation: aurora-shift 15s ease infinite;
+}
+
+body.liyue-mode .orb-1 {
+  background: radial-gradient(circle, #FFE175 0%, transparent 70%);
+}
+
+body.liyue-mode .orb-2 {
+  background: radial-gradient(circle, #E8C97A 0%, transparent 70%);
+}
+/* Liyue Geo Border Effect */
+.liyue-border-divider {
+  filter: drop-shadow(0 0 10px rgba(255, 225, 117, 0.5));
+}
+/* Region Cursor Particles */
+.electro-spark {
+  position: fixed; pointer-events: none; z-index: 9998;
+  width: 4px; height: 12px; background: #D376FF;
+  box-shadow: 0 0 8px #D376FF, 0 0 14px #E5B8FF;
+  border-radius: 2px;
+  animation: spark-fade 0.5s ease-out forwards;
+}
+
+@keyframes spark-fade {
+  to { opacity: 0; transform: translateY(15px) rotate(45deg) scale(0.2); }
+}
+
+.geo-shard {
+  position: fixed; pointer-events: none; z-index: 9998;
+  width: 7px; height: 7px; background: #FFE175;
+  box-shadow: 0 0 8px #FFE175, 0 0 12px #E8C97A;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  animation: geo-fall 0.7s ease-out forwards;
+}
+
+@keyframes geo-fall {
+  to { opacity: 0; transform: translateY(20px) rotate(90deg) scale(0.3); }
+}
+
+/* Cursor Dot Region Glow Colors */
+#cursor-dot.in-inazuma { 
+  background: #D376FF; 
+  box-shadow: 0 0 16px 4px rgba(211, 118, 255, 0.9); 
+}
+
+#cursor-dot.in-liyue { 
+  background: #FFE175; 
+  box-shadow: 0 0 16px 4px rgba(255, 225, 117, 0.9); 
+}
+
+/* Explicit Wish Modal Display */
+#wish-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999 !important;
+  pointer-events: auto;
+}
+
+#wish-modal.active {
+  display: flex !important;
+}
+
+/* Precise Head Core Anchor Origin */
+#wish-meteor {
+  transform-origin: calc(100% - 16px) 50%;
+}
+
+@keyframes genshin-meteor-center-flight {
+  0% {
+    transform: translate(65vw, -65vh) rotate(135deg) scale(0.3);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  /* Pauses with meteor head dead-center */
+  50% {
+    transform: translate(0, 0) rotate(135deg) scale(1.1);
+    opacity: 1;
+  }
+  65% {
+    transform: translate(0, 0) rotate(135deg) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-65vw, 65vh) rotate(135deg) scale(1.4);
+    opacity: 0;
+  }
+}
+
+.animate-genshin-meteor {
+  animation: genshin-meteor-center-flight 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Centered Starburst Explosion */
+@keyframes genshin-starburst-pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.8) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3.5) rotate(90deg);
+    opacity: 0;
+  }
+}
+
+.animate-starburst {
+  animation: genshin-starburst-pop 0.8s cubic-bezier(0.05, 0.85, 0.15, 1) forwards;
+}
+
+/* Centered Rainbow Ring Expansion */
+@keyframes rainbow-halo-expand {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(5.5);
+    opacity: 0;
+  }
+}
+
+.animate-rainbow-halo {
+  animation: rainbow-halo-expand 0.8s ease-out forwards;
+}
